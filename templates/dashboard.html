@@ -33,6 +33,19 @@
     <p>You haven't created any polls yet.</p>
   {% endif %}
 
+  <h2>The Polls</h2>
+  {% for poll in all_polls %}
+    <div style="margin-bottom: 20px;">
+      <strong>{{ poll.question }}</strong><br>
+
+      <form action="{{ url_for('vote', poll_id=poll.id) }}" method="post">
+        <button type="submit" name="choice" value="A" class="button-50">{{ poll.option_a }}</button>
+        <button type="submit" name="choice" value="B" class="button-50">{{ poll.option_b }}</button>
+      </form>
+    </div>
+  {% endfor %}
+
+
   <a href="{{ url_for('logout') }}" class="button-50">Logout</a>
 </div>
 {% endblock %}

@@ -100,7 +100,7 @@ def dashboard():
     if "username" in session:
         user = User.query.filter_by(username=session['username']).first()
         my_polls = Poll.query.filter_by(creator_id=user.id).all()
-        all_polls = Poll.query.all()
+        all_polls = Poll.query.order_by(Poll.id.desc()).all()
         return render_template("dashboard.html", username=session['username'], my_polls=my_polls,all_polls=all_polls)
     return redirect(url_for('home'))
 
@@ -143,28 +143,25 @@ def create_poll():
 @app.route("/vote/<int:poll_id>", methods=["POST"])
 def vote(poll_id):
     if "username" not in session:
-        return redirect(url_for("home"))
+        return "Not logged in", 401
 
     user = User.query.filter_by(username=session["username"]).first()
     poll = Poll.query.get_or_404(poll_id)
 
-    #do not allow the account to vote twice.
+    # user can not vote twice.
     existing_vote = Vote.query.filter_by(user_id=user.id, poll_id=poll_id).first()
     if existing_vote:
-        flash("You have already voted on this poll.")
-        return redirect(url_for("dashboard"))
+        return "<p style='color:red;'>You already voted.</p>"
 
     choice = request.form.get("choice")
     if choice not in ["A", "B"]:
-        flash("Invalid vote.")
-        return redirect(url_for("dashboard"))
+        return "<p style='color:red;'>Invalid vote.</p>"
 
     new_vote = Vote(user_id=user.id, poll_id=poll_id, choice=choice)
     db.session.add(new_vote)
     db.session.commit()
 
-    flash("Vote submitted!")
-    return redirect(url_for("dashboard"))
+    return "<p style='color:green;'>Vote submitted!</p>"
 
 
 

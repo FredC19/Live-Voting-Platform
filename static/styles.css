@@ -1,3 +1,72 @@
+/* Main dashboard wrapper */
+.dashboard-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Create Poll section */
+.create-poll {
+  width: 100%;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 1px solid #e5e5e5;
+  margin-bottom: 40px;
+}
+
+.create-poll h2 {
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Inputs */
+.create-poll .input-field {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background: #fafafa;
+  transition: border 0.2s ease;
+}
+
+.create-poll .input-field:focus {
+  border-color: #6c5b7b;
+  background: #fff;
+  outline: none;
+}
+
+/* Poll list section */
+.poll-lists h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #444;
+}
+
+/* Poll card */
+.poll-card {
+  background: #fff;
+  padding: 18px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.poll-card strong {
+  font-size: 1.1rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
 .button-50 {
   appearance: button;
   background-color: #000;

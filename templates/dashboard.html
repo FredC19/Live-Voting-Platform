@@ -4,11 +4,13 @@
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-<div class="container">
+<div class="dashboard-container">
+
+  <section class="create-poll">
   <h1>Dashboard</h1>
 
   <p>This is the dashboard, welcome {{ username }}!</p>
-  <h2>Create a Poll</h2>
+  <h2>Post-a-Poll</h2>
 
   <form action="{{ url_for('create_poll') }}" method="post">
     <input type="text" name="question" placeholder="Poll question" required class="input-field">
@@ -16,34 +18,47 @@
     <input type="text" name="option_b" placeholder="Option B" required class="input-field">
     <button type="submit" class="button-50">Create Poll</button>
   </form>
+</section>
 
-  <h2>Your Polls</h2>
 
-  {% if polls %}
-    <ul>
-      {% for poll in polls %}
-        <li>
-          <strong>{{ poll.question }}</strong><br>
-          A: {{ poll.option_a }}<br>
-          B: {{ poll.option_b }}
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>You haven't created any polls yet.</p>
-  {% endif %}
+  
+<section class="poll-lists">
 
-  <h2>The Polls</h2>
-  {% for poll in all_polls %}
-    <div style="margin-bottom: 20px;">
-      <strong>{{ poll.question }}</strong><br>
+<h2>All Polls</h2>
 
-      <form action="{{ url_for('vote', poll_id=poll.id) }}" method="post">
-        <button type="submit" name="choice" value="A" class="button-50">{{ poll.option_a }}</button>
-        <button type="submit" name="choice" value="B" class="button-50">{{ poll.option_b }}</button>
-      </form>
+{% for poll in all_polls %}
+  <div class="poll" style="margin-bottom: 20px;">
+    <strong>{{ poll.question }}</strong><br>
+
+    <div 
+      hx-target="#poll-result-{{ poll.id }}" 
+      hx-swap="innerHTML"
+    >
+      <button 
+        class="button-50" 
+        hx-post="{{ url_for('vote', poll_id=poll.id) }}" 
+        hx-include="[name='choice']"
+        name="choice" 
+        value="A"
+      >
+        {{ poll.option_a }}
+      </button>
+
+      <button 
+        class="button-50" 
+        hx-post="{{ url_for('vote', poll_id=poll.id) }}" 
+        hx-include="[name='choice']"
+        name="choice" 
+        value="B"
+      >
+        {{ poll.option_b }}
+      </button>
     </div>
-  {% endfor %}
+
+    <div id="poll-result-{{ poll.id }}"></div>
+  </div>
+{% endfor %}
+</section>
 
 
   <a href="{{ url_for('logout') }}" class="button-50">Logout</a>

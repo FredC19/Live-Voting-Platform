@@ -8,8 +8,32 @@
   <h1>Dashboard</h1>
 
   <p>This is the dashboard, welcome {{ username }}!</p>
+  <h2>Create a Poll</h2>
 
-<a href="{{ url_for('logout') }}" class="button-50">Logout</a>
+  <form action="{{ url_for('create_poll') }}" method="post">
+    <input type="text" name="question" placeholder="Poll question" required class="input-field">
+    <input type="text" name="option_a" placeholder="Option A" required class="input-field">
+    <input type="text" name="option_b" placeholder="Option B" required class="input-field">
+    <button type="submit" class="button-50">Create Poll</button>
+  </form>
+
+  <h2>Your Polls</h2>
+
+  {% if polls %}
+    <ul>
+      {% for poll in polls %}
+        <li>
+          <strong>{{ poll.question }}</strong><br>
+          A: {{ poll.option_a }}<br>
+          B: {{ poll.option_b }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You haven't created any polls yet.</p>
+  {% endif %}
+
+  <a href="{{ url_for('logout') }}" class="button-50">Logout</a>
 </div>
 {% endblock %}
 

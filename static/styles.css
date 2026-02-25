@@ -147,6 +147,94 @@
   background-color: #d62839 !important;
 }
 
+/* Center the whole page */
+.container {
+  max-width: 420px;
+  margin: 60px auto;
+  text-align: center;
+  padding: 0 20px;
+}
+
+/* Card styling for login/register */
+.auth-card {
+  background: #ffffff;
+  padding: 25px;
+  margin-bottom: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 1px solid #e5e5e5;
+}
+
+.auth-card h2 {
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Input fields */
+.input-field {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background: #fafafa;
+  transition: border 0.2s ease, background 0.2s ease;
+}
+
+.input-field:focus {
+  border-color: #6c5b7b;
+  background: #fff;
+  outline: none;
+}
+
+/* Buttons */
+.btn-login {
+  width: 100%;
+  padding: 12px;
+  background: #6c5b7b;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn-login:hover {
+  background: #7d6a8c;
+}
+
+.btn-login:active {
+  transform: translateY(2px);
+}
+
+.poll {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;      /* clean light border */
+  border-radius: 10px;            /* smooth rounded corners */
+  padding: 18px;                  /* comfortable spacing */
+  margin-bottom: 20px;            /* space between polls */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* subtle depth */
+  transition: box-shadow 0.2s ease;
+}
+
+.poll:hover {
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08); /* slight lift on hover */
+}
+
+.logout-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding-right: 20px; /* aligns with your dashboard padding */
+}
+
 @media (min-width: 768px) {
   .button-50 {
     padding: 12px 50px;

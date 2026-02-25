@@ -7,6 +7,11 @@
 <div class="dashboard-container">
 
   <section class="create-poll">
+
+  <div class="logout-container">
+  <a href="{{ url_for('logout') }}" class="button-50 logout-red">Logout</a>
+  </div>
+  
   <h1>Dashboard</h1>
 
   <p>This is the dashboard, welcome {{ username }}!</p>
@@ -33,8 +38,6 @@
 
 </section>
 
-
-  <a href="{{ url_for('logout') }}" class="button-50 logout-red">Logout</a>
 </div>
 {% endblock %}
 

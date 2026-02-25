@@ -27,10 +27,10 @@
     }
 
     nav a {
-      margin-right: 20px;
-      text-decoration: none;
-      color: #444;
-    }
+  margin-right: 20px;
+  text-decoration: none;
+  color: #fff;
+}
 
     nav a:hover {
       color: #000;
@@ -52,6 +52,19 @@
       color: #333;
     }
 
+.header-title {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.navbar {
+  display: flex;
+  gap: 30px;
+}
+
     footer {
       text-align: center;
       padding: 40px 20px;
@@ -64,13 +77,19 @@
 </head>
 <body>
 
-  <header>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
-    </nav>
-  </header>
+ <header>
+  <div class="header-title">This or That</div>
+
+  <nav class="navbar">
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+
+    {% if session.get('username') %}
+      <a href="{{ url_for('logout') }}">Logout</a>
+    {% endif %}
+  </nav>
+</header>
 
   <main>
     {% block content %}
@@ -83,3 +102,4 @@
 
 </body>
 </html>
+

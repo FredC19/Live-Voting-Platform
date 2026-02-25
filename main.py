@@ -29,12 +29,20 @@ class User(db.Model):
 #Poll model
 class Poll(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    question = db.Column(db.String(300), nullable=False)
+    question = db.Column(db.String(250), nullable=False)
     option_a = db.Column(db.String(100), nullable=False)
     option_b = db.Column(db.String(100), nullable=False)
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     creator = db.relationship('User', backref='polls')
     votes = db.relationship('Vote', backref='poll', lazy=True)
+
+#Vote count model
+class Vote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'), nullable=False)
+    choice = db.Column(db.String(1), nullable=False) 
+    voter = db.relationship('User', backref='votes')
 
 
 
@@ -90,7 +98,9 @@ def register():
 @app.route("/dashboard")
 def dashboard():
     if "username" in session:
-        return render_template("dashboard.html", username=session['username'])
+        user = User.query.filter_by(username=session['username']).first()
+        polls = Poll.query.filter_by(creator_id=user.id).all()
+        return render_template("dashboard.html", username=session['username'], polls=polls)
     return redirect(url_for('home'))
 
 
@@ -100,6 +110,33 @@ def dashboard():
 def logout():
     session.pop("username", None)
     return redirect(url_for('home'))
+
+
+#Create poll
+@app.route("/create_poll", methods=["POST"])
+def create_poll():
+    if "username" not in session:
+        return redirect(url_for('home'))
+
+    question = request.form["question"]
+    option_a = request.form["option_a"]
+    option_b = request.form["option_b"]
+
+    # Get the logged-in user
+    user = User.query.filter_by(username=session["username"]).first()
+
+    new_poll = Poll(
+        question=question,
+        option_a=option_a,
+        option_b=option_b,
+        creator_id=user.id
+    )
+
+    db.session.add(new_poll)
+    db.session.commit()
+
+    flash("Poll created successfully!")
+    return redirect(url_for('dashboard'))
 
 
 

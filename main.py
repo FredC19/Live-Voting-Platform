@@ -12,7 +12,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
-#DB model
+#user DB model
 class User(db.Model):
     #class variables
     id = db.Column(db.Integer, primary_key=True)
@@ -25,6 +25,16 @@ class User(db.Model):
 
     def check_password(self,password):
         return check_password_hash(self.password_hash, password)
+
+#Poll model
+class Poll(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    question = db.Column(db.String(300), nullable=False)
+    option_a = db.Column(db.String(100), nullable=False)
+    option_b = db.Column(db.String(100), nullable=False)
+    creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    creator = db.relationship('User', backref='polls')
+    votes = db.relationship('Vote', backref='poll', lazy=True)
 
 
 

@@ -26,38 +26,11 @@
 
 <h2>All Polls</h2>
 
-{% for poll in all_polls %}
-  <div class="poll" style="margin-bottom: 20px;">
-    <strong>{{ poll.question }}</strong><br>
+<div id="poll-feed">
+    {% set chunk = polls %}
+    {% include "poll_chunk.html" %}
+</div>
 
-    <div 
-      hx-target="#poll-result-{{ poll.id }}" 
-      hx-swap="innerHTML"
-    >
-      <button 
-        class="button-50" 
-        hx-post="{{ url_for('vote', poll_id=poll.id) }}" 
-        hx-include="[name='choice']"
-        name="choice" 
-        value="A"
-      >
-        {{ poll.option_a }}
-      </button>
-
-      <button 
-        class="button-50" 
-        hx-post="{{ url_for('vote', poll_id=poll.id) }}" 
-        hx-include="[name='choice']"
-        name="choice" 
-        value="B"
-      >
-        {{ poll.option_b }}
-      </button>
-    </div>
-
-    <div id="poll-result-{{ poll.id }}"></div>
-  </div>
-{% endfor %}
 </section>
 
 

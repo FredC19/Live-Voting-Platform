@@ -36,6 +36,24 @@ class Poll(db.Model):
     creator = db.relationship('User', backref='polls')
     votes = db.relationship('Vote', backref='poll', lazy=True)
 
+    def count_a(self):
+        return Vote.query.filter_by(poll_id=self.id, choice="A").count()
+
+    def count_b(self):
+        return Vote.query.filter_by(poll_id=self.id, choice="B").count()
+
+    def total_votes(self):
+        return self.count_a() + self.count_b()
+
+    def percent_a(self):
+        total = self.total_votes()
+        return round((self.count_a() / total) * 100) if total > 0 else 0
+
+    def percent_b(self):
+        total = self.total_votes()
+        return round((self.count_b() / total) * 100) if total > 0 else 0
+
+
 #Vote count model
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -43,6 +61,7 @@ class Vote(db.Model):
     poll_id = db.Column(db.Integer, db.ForeignKey('poll.id'), nullable=False)
     choice = db.Column(db.String(1), nullable=False) 
     voter = db.relationship('User', backref='votes')
+
 
 
 
@@ -100,8 +119,14 @@ def dashboard():
     if "username" in session:
         user = User.query.filter_by(username=session['username']).first()
         my_polls = Poll.query.filter_by(creator_id=user.id).all()
-        all_polls = Poll.query.order_by(Poll.id.desc()).all()
-        return render_template("dashboard.html", username=session['username'], my_polls=my_polls,all_polls=all_polls)
+
+        #paginate the polls,for infinite scroll
+        page = 1
+        per_page = 10
+        polls = Poll.query.order_by(Poll.id.desc()).paginate(page=page, per_page=per_page)
+
+
+        return render_template("dashboard.html", username=session['username'], my_polls=my_polls,polls=polls)
     return redirect(url_for('home'))
 
 
@@ -162,6 +187,17 @@ def vote(poll_id):
     db.session.commit()
 
     return "<p style='color:green;'>Vote submitted!</p>"
+
+
+#Load more polls
+@app.route("/load_polls")
+def load_polls():
+    page = int(request.args.get("page", 1))
+    per_page = 10
+
+    polls = Poll.query.order_by(Poll.id.desc()).paginate(page=page, per_page=per_page)
+
+    return render_template("poll_chunk.html", polls=polls)
 
 
 

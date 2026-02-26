@@ -23,8 +23,7 @@ class User(db.Model):
     #class variables
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), unique=True, nullable=False)
-    password_hash = db.Column(db.String(150), nullable=False)
-
+    password_hash = db.Column(db.String(256), nullable=False)
 
     def set_password(self,password):
         self.password_hash = generate_password_hash(password)

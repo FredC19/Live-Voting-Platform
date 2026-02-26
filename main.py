@@ -84,6 +84,11 @@ def login():
     username = request.form['username']
     password = request.form["password"]
     user = User.query.filter_by(username=username).first()
+
+    if not username or not password:
+            flash("Username and password are required.")
+            return redirect(url_for("home"))
+
     if user and user.check_password(password):
         session['username'] = username
         return redirect(url_for('dashboard'))
@@ -99,6 +104,12 @@ def register():
     username = request.form['username']
     password = request.form["password"]
     user = User.query.filter_by(username=username).first()
+
+    if not username or not password:
+            flash("Username and password are required.")
+            return redirect(url_for("home"))
+
+
     if user:
         flash("Username taken, pick another one.")
         return redirect(url_for('home'))

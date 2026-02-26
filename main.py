@@ -215,6 +215,12 @@ def load_polls():
 
     return render_template("poll_chunk.html", polls=polls)
 
+@app.route("/reset-db-xk92")
+def reset_db():
+    db.drop_all()
+    db.create_all()
+    return "Done"
+
 
 
 
